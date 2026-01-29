@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Backend/">
+    <Project Path="src/Backend/CookBook.API/CookBook.API.csproj" Id="d4871f28-0d6c-4940-87ae-07158869f533" />
+    <Project Path="src/Backend/CookBook.Application/CookBook.Application.csproj" Id="2dd15982-054e-4fc0-afef-dfedc17884b3" />
+    <Project Path="src/Backend/CookBook.Domain/CookBook.Domain.csproj" Id="8eaf8262-31ad-47ee-aded-b0a5e350e660" />
+    <Project Path="src/Backend/CookBook.Infrastructure/CookBook.Infrastructure.csproj" Id="674407bb-7efc-4970-8757-b322325f9764" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/CookBook.Communication/CookBook.Communication.csproj" Id="65058a76-da3d-4407-8f10-307bde4ca9c1" />
+    <Project Path="src/Shared/CookBook.Exceptions/CookBook.Exceptions.csproj" Id="91ded033-94cc-404e-9a83-2d175970a7f0" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
