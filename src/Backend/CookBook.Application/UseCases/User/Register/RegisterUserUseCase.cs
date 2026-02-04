@@ -1,5 +1,6 @@
 ﻿using CookBook.Communication.Requests;
 using CookBook.Communication.Responses;
+using CookBook.Exceptions.ExceptionsBase;
 
 namespace CookBook.Application.UseCases.User.Register
 {
@@ -20,11 +21,11 @@ namespace CookBook.Application.UseCases.User.Register
 
             var result = validator.Validate(request);
 
-            if (result.IsValid == false)
+            if (!result.IsValid)
             {
                 var errorMessages = result.Errors.Select(e => e.ErrorMessage);
 
-                throw new Exception();
+                throw new ErrorOnValidationException(errorMessages);
             }
         }
     }
