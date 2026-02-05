@@ -15,7 +15,6 @@ namespace CookBook.API.Controllers
         public IActionResult Register(RequestRegisterUserJson request )
         {
             var useCase = new RegisterUserUseCase();
-
             var result = useCase.Execute(request);
 
             return Created(string.Empty, result);
