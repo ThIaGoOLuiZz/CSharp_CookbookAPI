@@ -1,6 +1,8 @@
-﻿using CookBook.Communication.Requests;
+﻿using CookBook.Application.Services.AutoMapper;
+using CookBook.Communication.Requests;
 using CookBook.Communication.Responses;
 using CookBook.Exceptions.ExceptionsBase;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CookBook.Application.UseCases.User.Register
 {
@@ -9,6 +11,13 @@ namespace CookBook.Application.UseCases.User.Register
         public ResponseRegisteredUserJson Execute(RequestRegisterUserJson request)
         {
             Validate(request);
+
+            var automapper = new AutoMapper.MapperConfiguration(options =>
+            {
+                options.AddProfile(new AutoMapping());
+            }, NullLoggerFactory.Instance).CreateMapper();
+
+            var user = automapper.Map<Domain.Entities.User>(request);
 
             return new ResponseRegisteredUserJson
             {
