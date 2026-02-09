@@ -1,4 +1,5 @@
 ﻿using CookBook.Application.Services.AutoMapper;
+using CookBook.Application.Services.Cryptography;
 using CookBook.Communication.Requests;
 using CookBook.Communication.Responses;
 using CookBook.Exceptions.ExceptionsBase;
@@ -10,14 +11,17 @@ namespace CookBook.Application.UseCases.User.Register
     {
         public ResponseRegisteredUserJson Execute(RequestRegisterUserJson request)
         {
-            Validate(request);
-
+            var criptografiaSenha = new PasswordEncripter();
             var automapper = new AutoMapper.MapperConfiguration(options =>
             {
                 options.AddProfile(new AutoMapping());
             }, NullLoggerFactory.Instance).CreateMapper();
 
+            Validate(request);
+
             var user = automapper.Map<Domain.Entities.User>(request);
+            
+            user.Password = criptografiaSenha.Encrypt(request.Password);
 
             return new ResponseRegisteredUserJson
             {
