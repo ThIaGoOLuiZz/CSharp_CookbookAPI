@@ -2,6 +2,7 @@
 using CookBook.Application.Services.Cryptography;
 using CookBook.Communication.Requests;
 using CookBook.Communication.Responses;
+using CookBook.Domain.Repository.User;
 using CookBook.Exceptions.ExceptionsBase;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -9,7 +10,10 @@ namespace CookBook.Application.UseCases.User.Register
 {
     public class RegisterUserUseCase
     {
-        public ResponseRegisteredUserJson Execute(RequestRegisterUserJson request)
+        private readonly IUserWriteOnlyRepository _writeOnlyRepository;
+        private readonly IUserReadOnlyRepository _readOnlyRepository;
+
+        public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)
         {
             var criptografiaSenha = new PasswordEncripter();
             var automapper = new AutoMapper.MapperConfiguration(options =>
@@ -20,8 +24,9 @@ namespace CookBook.Application.UseCases.User.Register
             Validate(request);
 
             var user = automapper.Map<Domain.Entities.User>(request);
-            
             user.Password = criptografiaSenha.Encrypt(request.Password);
+
+            await _writeOnlyRepository.Add(user);
 
             return new ResponseRegisteredUserJson
             {
