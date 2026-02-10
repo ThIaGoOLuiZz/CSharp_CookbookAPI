@@ -12,10 +12,10 @@ namespace CookBook.Application.Services.Cryptography
     {
         public string Encrypt(string password)
         {
-            var chaveAdicional = "ABC"
+            var chaveAdicional = "ABC";
             var newPassword = $"{password}{chaveAdicional}";
 
-            var bytes = Encoding.UTF8.GetBytes(password);
+            var bytes = Encoding.UTF8.GetBytes(newPassword);
             var hashBytes = SHA512.HashData(bytes);
 
             return StringBytes(hashBytes);
