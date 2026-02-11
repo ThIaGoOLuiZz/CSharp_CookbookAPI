@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Shared\CookBook.Communication\CookBook.Communication.csproj" />
     <ProjectReference Include="..\..\Shared\CookBook.Exceptions\CookBook.Exceptions.csproj" />
     <ProjectReference Include="..\CookBook.Domain\CookBook.Domain.csproj" />
+    <ProjectReference Include="..\CookBook.Infrastructure\CookBook.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
