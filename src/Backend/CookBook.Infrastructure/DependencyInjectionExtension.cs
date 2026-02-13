@@ -1,4 +1,5 @@
-﻿using CookBook.Domain.Repository.User;
+﻿using CookBook.Domain.Repository;
+using CookBook.Domain.Repository.User;
 using CookBook.Infrastructure.DataAccess;
 using CookBook.Infrastructure.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ namespace CookBook.Infrastructure
 
         private static void AddRepositories(IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
             services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         }
