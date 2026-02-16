@@ -3,6 +3,7 @@ using CookBook.Domain.Repository.User;
 using CookBook.Infrastructure.DataAccess;
 using CookBook.Infrastructure.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,16 @@ namespace CookBook.Infrastructure
 {
     public static class DependencyInjectionExtension
     {
-        public static void AddInfrastructure(this IServiceCollection services)
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            AddDbContext(services);
+            AddDbContext(services, configuration);
             AddRepositories(services);
         }
 
-        private static void AddDbContext(IServiceCollection services)
+        private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = "Server=localhost;Database=cookbookapi;Uid=root;Pwd=123456;";
+            var connectionString = configuration.GetConnectionString("Connection");
+
             var serverVersion = new MySqlServerVersion(new Version(8,0,42));
 
             services.AddDbContext<CookBookDbContext>(dbContextOptions =>
