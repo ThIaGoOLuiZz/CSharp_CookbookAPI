@@ -1,6 +1,7 @@
 ﻿using CookBook.Application.Services.AutoMapper;
 using CookBook.Application.Services.Cryptography;
 using CookBook.Application.UseCases.User.Register;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -13,11 +14,11 @@ namespace CookBook.Application
 {
     public static class DependencyInjectionExtension
     {
-        public static void AddApplication(this IServiceCollection services)
+        public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             AddAutoMapper(services);
             AddUseCases(services);
-            AddPasswordEncrypter(services);
+            AddPasswordEncrypter(services, configuration);
         }
 
         private static void AddAutoMapper(IServiceCollection services)
@@ -32,9 +33,11 @@ namespace CookBook.Application
         {
             services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
         }
-        private static void AddPasswordEncrypter(IServiceCollection services)
+        private static void AddPasswordEncrypter(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped(options => new PasswordEncripter());
+            var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
+
+            services.AddScoped(options => new PasswordEncripter(additionalKey!));
         }
     }
 }
