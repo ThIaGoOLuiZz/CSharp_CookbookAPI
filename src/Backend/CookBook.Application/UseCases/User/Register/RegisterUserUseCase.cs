@@ -5,8 +5,10 @@ using CookBook.Communication.Requests;
 using CookBook.Communication.Responses;
 using CookBook.Domain.Repository;
 using CookBook.Domain.Repository.User;
+using CookBook.Exceptions;
 using CookBook.Exceptions.ExceptionsBase;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Reflection;
 
 namespace CookBook.Application.UseCases.User.Register
 {
@@ -29,7 +31,7 @@ namespace CookBook.Application.UseCases.User.Register
 
         public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)
         {
-            Validate(request);
+            await Validate(request);
 
             var user = _automapper.Map<Domain.Entities.User>(request);
             user.Password = _passwordEncripter.Encrypt(request.Password);
@@ -43,11 +45,18 @@ namespace CookBook.Application.UseCases.User.Register
                 Name = request.Name
             };
         }
-        private void Validate(RequestRegisterUserJson request)
+        private async Task Validate(RequestRegisterUserJson request)
         {
             var validator = new RegisterUserValidator();
 
             var result = validator.Validate(request);
+
+            var emailExists = await _readOnlyRepository.ExistActiveUserWithEmail(request.Email);
+
+            if (emailExists)
+            {
+                result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
+            }
 
             if (!result.IsValid)
             {
