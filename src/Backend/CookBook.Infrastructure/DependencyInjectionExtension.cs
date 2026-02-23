@@ -2,6 +2,7 @@
 using CookBook.Domain.Repository.User;
 using CookBook.Infrastructure.DataAccess;
 using CookBook.Infrastructure.DataAccess.Repository;
+using CookBook.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,7 @@ namespace CookBook.Infrastructure
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("Connection");
+            var connectionString = configuration.ConnectionString();
 
             var serverVersion = new MySqlServerVersion(new Version(8,0,42));
 
